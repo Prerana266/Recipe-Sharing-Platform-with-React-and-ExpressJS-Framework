@@ -74,17 +74,22 @@ Backend runs on:
 
 Frontend runs on:
     http://localhost:5173
+    
 
+## 🌍 Live Demo
 
-🌍 Live Demo
-🔗 Live Application:
+Live Application:
     https://deploying-recipe-sharing-platform-o7fw.onrender.com/
 
+## 👩‍💻 Author
 
-👩‍💻 Author
 Prerana Patil
-GitHub: https://github.com/Prerana266
-Linkedin: https://www.linkedin.com/in/preranaspatil/
+
+GitHub:
+    https://github.com/Prerana266
+
+LinkedIn:
+    https://www.linkedin.com/in/preranaspatil/
 
 
 
