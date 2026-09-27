@@ -14,7 +14,7 @@ export default function RecipeDetails() {
             <h5>{recipe.email}</h5>
         </div>
         <h3 className='title'>{recipe.title}</h3>
-        <img src={`http://localhost:5000/images/${recipe.coverImage}`} width="220px" height="200px"></img>
+        <img src={`https://deploying-recipe-sharing-platform.onrender.com/images/${recipe.coverImage}`} width="220px" height="200px"></img>
         <div className='recipe-details'>
             <div className='ingredients'><h4>Ingredients</h4><ul>{recipe.ingredients.map(item=>(<li>{item}</li>))}</ul></div>
             <div className='instructions'><h4>Instructions</h4><span>{recipe.instructions}</span></div>

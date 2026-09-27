@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 import foodRecipe from '../assets/foodRecipe.png'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
 import RecipeItems from '../components/RecipeItems'
 import { useNavigate } from 'react-router-dom'
 import Modal from '../components/Modal'
@@ -12,31 +10,83 @@ export default function Home() {
     const [isOpen, setIsOpen] = useState(false)
 
     const addRecipe = () => {
-        let token = localStorage.getItem("token")
-        if (token)
+        const token = localStorage.getItem("token")
+
+        if (token) {
             navigate("/addRecipe")
-        else {
+        } else {
             setIsOpen(true)
         }
     }
 
     return (
         <>
-            <section className='home'>
-                <div className='left'>
+            <section className="home">
+
+                {/* LEFT SIDE */}
+                <div className="left">
+
                     <h1>Cook, Share & Enjoy !!!</h1>
-                    <h4>Welcome to a world of flavors! Explore a diverse collection of delicious recipes, from quick and easy meals to gourmet delights. Share your favorite recipes, discover new flavors, and be part of a passionate community that loves good food. Cooking is more than just a routine—it’s an experience. Let’s make every meal special!</h4>
-                    <button onClick={addRecipe}>Share your recipe</button>
+
+                    <h4>
+                        Welcome to a world of flavors! Explore a diverse
+                        collection of delicious recipes, from quick and easy
+                        meals to gourmet delights. Share your favorite recipes,
+                        discover new flavors, and be part of a passionate
+                        community that loves good food. Cooking is more than
+                        just a routine—it’s an experience. Let’s make every
+                        meal special!
+                    </h4>
+
+                    <button
+                        className="create-recipe-btn"
+                        onClick={addRecipe}
+                    >
+                        Share your recipe
+                    </button>
+
                 </div>
-                <div className='right'>
-                    <img src={foodRecipe} width="320px" height="300px"></img>
+
+
+                {/* RIGHT SIDE */}
+                <div className="right">
+                    <img
+                        src={foodRecipe}
+                        alt="Delicious food"
+                    />
                 </div>
+
+
+                {/* WAVE */}
+                <div className="bg">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 1440 320"
+                        preserveAspectRatio="none"
+                    >
+                        <path
+                            fill="#d4f6e8"
+                            fillOpacity="1"
+                            d="M0,32L40,32C80,32,160,32,240,58.7C320,85,400,139,480,149.3C560,160,640,128,720,101.3C800,75,880,53,960,80C1040,107,1120,181,1200,213.3C1280,245,1360,235,1400,229.3L1440,224L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"
+                        />
+                    </svg>
+                </div>
+
             </section>
-            <div className='bg'>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#d4f6e8" fillOpacity="1" d="M0,32L40,32C80,32,160,32,240,58.7C320,85,400,139,480,149.3C560,160,640,128,720,101.3C800,75,880,53,960,80C1040,107,1120,181,1200,213.3C1280,245,1360,235,1400,229.3L1440,224L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path></svg>
-            </div>
-            {(isOpen) && <Modal onClose={() => setIsOpen(false)}><InputForm setIsOpen={() => setIsOpen(false)} /></Modal>}
-            <div className='recipe'>
+
+
+            {/* MODAL */}
+            {isOpen && (
+                <Modal onClose={() => setIsOpen(false)}>
+                    <InputForm
+                        setIsOpen={() => setIsOpen(false)}
+                    />
+                </Modal>
+            )}
+
+
+            {/* RECIPES */}
+            <div className="recipe">
                 <RecipeItems />
             </div>
         </>
