@@ -41,7 +41,11 @@ export default function RecipeItems() {
                 {
                     allRecipes?.map((item, index) => {
                         return (
-                            <div key={index} className='card'onDoubleClick={()=>navigate(`/recipe/${item._id}`)}>
+                            <div
+    key={index}
+    className='card'
+    onClick={() => navigate(`/recipe/${item._id}`)}
+>
                                 <img
     src={
         item.coverImage?.startsWith("http")
