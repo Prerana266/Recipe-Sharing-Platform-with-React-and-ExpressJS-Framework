@@ -1,12 +1,27 @@
 const User = require("../models/user")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 
 const userSignUp = async (req, res) => {
     const { email, password } = req.body
     if (!email || !password) {
         return res.status(400).json({ message: "Email and password is required" })
     }
+    if (!emailRegex.test(email)) {
+    return res.status(400).json({
+        error: "Please enter a valid email address"
+    })
+}
+
+if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+        error: "Password must be at least 8 characters and contain uppercase, lowercase, number and special character"
+    })
+}
     let user = await User.findOne({ email })
     if (user) {
         return res.status(400).json({ error: "Email is already exist" })
