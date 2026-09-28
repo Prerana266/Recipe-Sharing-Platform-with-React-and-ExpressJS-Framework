@@ -11,7 +11,11 @@ export default function RecipeItems() {
     const recipes = useLoaderData()
     const [allRecipes, setAllRecipes] = useState()
     let path = window.location.pathname === "/myRecipe" ? true : false
-    let favItems = JSON.parse(localStorage.getItem("fav")) ?? []
+    const [favItems, setFavItems] = useState(() => {
+    let user = JSON.parse(localStorage.getItem("user"))
+    let favKey = `fav_${user?.email}`
+    return JSON.parse(localStorage.getItem(favKey)) ?? []
+})
     const [isFavRecipe, setIsFavRecipe] = useState(false)
     const navigate=useNavigate()
     console.log(allRecipes)
@@ -20,20 +24,60 @@ export default function RecipeItems() {
         setAllRecipes(recipes)
     }, [recipes])
 
+  useEffect(() => {
+    const handleLogin = () => {
+        const user = JSON.parse(localStorage.getItem("user"))
+        const favKey = `fav_${user?.email}`
+
+        const savedFavs =
+            JSON.parse(localStorage.getItem(favKey)) ?? []
+
+        setFavItems(savedFavs)
+    }
+
+    const handleLogout = () => {
+        setFavItems([])
+        setIsFavRecipe(false)
+    }
+
+    window.addEventListener("login", handleLogin)
+    window.addEventListener("logout", handleLogout)
+
+    return () => {
+        window.removeEventListener("login", handleLogin)
+        window.removeEventListener("logout", handleLogout)
+    }
+}, [])
+
     const onDelete = async (id) => {
         await axios.delete(`https://deploying-recipe-sharing-platform.onrender.com/recipe/${id}`)
             .then((res) => console.log(res))
         setAllRecipes(recipes => recipes.filter(recipe => recipe._id !== id))
         let filterItem = favItems.filter(recipe => recipe._id !== id)
-        localStorage.setItem("fav", JSON.stringify(filterItem))
+        localStorage.setItem(favKey, JSON.stringify(filterItem))
     }
 
     const favRecipe = (item) => {
-        let filterItem = favItems.filter(recipe => recipe._id !== item._id)
-        favItems = favItems.filter(recipe => recipe._id === item._id).length === 0 ? [...favItems, item] : filterItem
-        localStorage.setItem("fav", JSON.stringify(favItems))
-        setIsFavRecipe(pre => !pre)
+    const user = JSON.parse(localStorage.getItem("user"))
+    const favKey = `fav_${user?.email}`
+
+    const isAlreadyFav = favItems.some(
+        recipe => recipe._id === item._id
+    )
+
+    let updatedFavItems
+
+    if (isAlreadyFav) {
+        updatedFavItems = favItems.filter(
+            recipe => recipe._id !== item._id
+        )
+    } else {
+        updatedFavItems = [...favItems, item]
     }
+
+    setFavItems(updatedFavItems)
+    localStorage.setItem(favKey, JSON.stringify(updatedFavItems))
+}
 
     return (
         <>
@@ -44,7 +88,7 @@ export default function RecipeItems() {
                             <div
     key={index}
     className='card'
-    onClick={() => navigate(`/recipe/${item._id}`)}
+    onDoubleClick={() => navigate(`/recipe/${item._id}`)}
 >
                                 <img
     src={

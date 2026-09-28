@@ -24,7 +24,9 @@ const getMyRecipes=async()=>{
 }
 
 const getFavRecipes=()=>{
-  return JSON.parse(localStorage.getItem("fav"))
+  let user = JSON.parse(localStorage.getItem("user"))
+  let favKey = `fav_${user?.email}`
+  return JSON.parse(localStorage.getItem(favKey)) ?? []
 }
 
 const getRecipe=async({params})=>{
